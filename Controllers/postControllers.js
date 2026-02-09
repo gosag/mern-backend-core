@@ -13,15 +13,15 @@ export const getPosts=(req,res,next)=>{
 }
 export const getPostsById=(req,res,next)=>{
     const postId=parseInt(req.params.id)
-    if(isNaN(postId) || postId<1 || postId>posts.length){
+    const post=posts.find(p=>p.id===postId)
+    if(!post){
         const error=new Error("Post not found");
         error.status=404;
         return next(error);
     }
-    const post=posts.find(p=>p.id===postId)
     res.json(post);
 }
-export const createPost=(req,res)=>{
+export const createPost=(req,res,next)=>{
     const newPost={
     id:posts.length+1,
      title:req.body.title
@@ -36,20 +36,21 @@ export const createPost=(req,res)=>{
 }
 export const updatePost=(req,res,next)=>{
     const postId=parseInt(req.params.id)
-    const postIndex=posts.findIndex(p=>p.id===postId)
-    if(postIndex===-1){
+    const post=posts.find(p=>p.id===postId)
+    if(!post){
         const error=new Error("Post not found");
         error.status=404;
         return next(error);
     }
+    const postIndex=posts.findIndex(p=>p.id===postId)
     posts[postIndex].title=req.body.title || posts[postIndex].title;
     posts[postIndex].id=postId;
     res.json(posts[postIndex]);
 }
-export const deletePost=(req,res)=>{
+export const deletePost=(req,res,next)=>{
     const postId=parseInt(req.params.id)
-    const postIndex=posts.findIndex(p=>p.id===postId)
-    if(postIndex===-1){
+    const post=posts.find(p=>p.id===postId)
+    if(!post){
         const error=new Error("Post not found");
         error.status=404;
         return next(error);
