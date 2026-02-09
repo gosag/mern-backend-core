@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "posts.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch --env-file=.env server.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/gosag/Express-Rest/issues"
   },
-  "homepage": "https://github.com/gosag/Express-Rest#readme"
+  "homepage": "https://github.com/gosag/Express-Rest#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
 }
