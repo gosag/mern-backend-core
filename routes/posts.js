@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import {getPosts,getPostsById,createPost,updatePost,deletePost} from './Controllers/postControllers.js';
+import {getPosts,getPostsById,createPost,updatePost,deletePost} from '../Controllers/postControllers.js';
 const router=express.Router();
 //main page route
 const __filename=fileURLToPath(import.meta.url);
