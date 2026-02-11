@@ -8,5 +8,14 @@
 <body>
    <h1>Welcome to the Home Page</h1>
    <p>This is the main page of our Express REST API application.</p> 
+   <form id="postForm">
+       <label for="title">Title:</label>
+       <input type="text" id="title" name="title" required>
+       <button type="submit">Submit</button>
+    </form>
+    </br>
+    <button id="getPosts">Get All Posts</button>
+    <div id="response"></div>
+   <script src="./client.js"></script>
 </body>
 </html>

@@ -1,12 +1,6 @@
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import {getPosts,getPostsById,createPost,updatePost,deletePost} from '../Controllers/postControllers.js';
 const router=express.Router();
-//main page route
-const __filename=fileURLToPath(import.meta.url);
-const __dirname=path.dirname(__filename);
-router.use(express.static(path.join(__dirname,'public')));
 //Get all posts
 router.get('/api/posts',getPosts);
 //Get a specific post by ID
