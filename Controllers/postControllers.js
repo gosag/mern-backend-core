@@ -1,25 +1,16 @@
-let posts=[
-    { id:1, title:"First Post"},
-    { id:2, title:"Second Post"},
-    { id:3, title:"Third Post"}
-]
 import Post from '../models/Post.js';
-export const getPosts=(req,res,next)=>{
+export const getPosts=async (req,res,next)=>{
     const limit=parseInt(req.query.limit)
         if(limit && !isNaN(limit)){
-            const limitedPosts=posts.slice(0,limit);
-            return res.json(limitedPosts);
+            const DBposts= await Post.find().limit(limit);
+            return res.json(DBposts);
         }
-    if(posts.length===0){
-        const error=new Error("No posts found");
-        error.status=404;
-        return next(error);
-    }
-    res.json(posts);
+    const DBposts= await Post.find();
+    res.json(DBposts);
 }
-export const getPostsById=(req,res,next)=>{
-    const postId=parseInt(req.params.id)
-    const post=posts.find(p=>p.id===postId)
+export const getPostsById=async (req,res,next)=>{
+    const postId=req.params.id;
+    const post=await Post.findById(postId)
     if(!post){
         const error=new Error("Post not found");
         error.status=404;
@@ -27,41 +18,35 @@ export const getPostsById=(req,res,next)=>{
     }
     res.json(post);
 }
-export const createPost=(req,res,next)=>{
-    const newPost={
-    id:posts.length+1,
-     title:req.body.title
-    }
-    if(!newPost.title){
+export const createPost=async (req,res,next)=>{
+    const newPost=new Post({
+        title:req.body.title
+    });
+    if(!req.body.title){
         const error=new Error("Title is required");
         error.status=400;
         return next(error);
     }
-    posts.push(newPost);
+    await newPost.save();
     res.status(201).json(newPost);
 }
-export const updatePost=(req,res,next)=>{
-    const postId=parseInt(req.params.id)
-    const post=posts.find(p=>p.id===postId)
+export const updatePost=async (req,res,next)=>{
+    const postId=req.params.id;
+    const post=await Post.findByIdAndUpdate(postId,{title:req.body.title})
     if(!post){
         const error=new Error("Post not found");
         error.status=404;
         return next(error);
     }
-    const postIndex=posts.findIndex(p=>p.id===postId)
-    posts[postIndex].title=req.body.title || posts[postIndex].title;
-    posts[postIndex].id=postId;
-    res.json(posts[postIndex]);
+    res.json(post);
 }
-export const deletePost=(req,res,next)=>{
-    const postId=parseInt(req.params.id)
-    const post=posts.find(p=>p.id===postId)
+export const deletePost=async (req,res,next)=>{
+    const postId=req.params.id;
+    const post=await Post.findByIdAndDelete(postId)
     if(!post){
         const error=new Error("Post not found");
         error.status=404;
         return next(error);
     }
-    const nonDeletedPost=posts.filter(post=>post.id!==postId)
-    posts=nonDeletedPost;
     res.json({message:"Post deleted successfully"});
 }
