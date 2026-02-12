@@ -2,13 +2,13 @@ import express from 'express';
 import {getPosts,getPostsById,createPost,updatePost,deletePost} from '../Controllers/postControllers.js';
 const router=express.Router();
 //Get all posts
-router.get('/api/posts',getPosts);
+router.get('/',getPosts);
 //Get a specific post by ID
-router.get('/api/posts/:id',getPostsById);
+router.get('/:id',getPostsById);
 //Create a new post
-router.post('/api/posts',createPost);
+router.post('/',createPost);
 //update a post by ID
-router.put('/api/posts/:id',updatePost);
+router.put('/:id',updatePost);
 //delete a post by ID
-router.delete('/api/posts/:id',deletePost);
+router.delete('/:id',deletePost);
 export default router;

@@ -19,7 +19,7 @@ app.use(logger);
 const __dirname=path.dirname(__filename);
 router.use(express.static(path.join(__dirname,'public'))); */
 //importing the routes
-app.use(router);
+app.use("/api/posts",router);
 //using the error handling middleware
 app.use(errorHandler);
 

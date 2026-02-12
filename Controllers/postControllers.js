@@ -9,26 +9,29 @@ export const getPosts=async (req,res,next)=>{
     res.json(DBposts);
 }
 export const getPostsById=async (req,res,next)=>{
-    const postId=req.params.id;
-    const post=await Post.findById(postId)
-    if(!post){
-        const error=new Error("Post not found");
-        error.status=404;
-        return next(error);
-    }
-    res.json(post);
+   const postId=req.params.id;
+   const post=await findById(postId);
+   if(!post){
+       const error=new Error("Post not found");
+       error.status=404;
+       return next(error)
+   }
+   res.status(200).json(post)
 }
 export const createPost=async (req,res,next)=>{
-    const newPost=new Post({
-        title:req.body.title
-    });
-    if(!req.body.title){
-        const error=new Error("Title is required");
-        error.status=400;
-        return next(error);
+    try{
+        const newPost=new Post({
+            title:req.body.title
+        });
+        await newPost.save()
+        res.status(201).json(newPost);
     }
-    await newPost.save();
-    res.status(201).json(newPost);
+    catch(error){
+        if(error.name==="ValidationError"){
+            error.status=400;
+        }
+        next(error);
+    }
 }
 export const updatePost=async (req,res,next)=>{
     const postId=req.params.id;
