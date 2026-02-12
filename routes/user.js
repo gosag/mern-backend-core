@@ -1,6 +1,7 @@
 import User from '../models/UserModel.js';
 import express from "express";
 const userRouter=express.Router();
+//get all users
 userRouter.get('/',async(req,res,next)=>{
     try{
         const limit=req.query.limit;
@@ -20,6 +21,26 @@ userRouter.get('/',async(req,res,next)=>{
     }
     
 })
+//find a user by ID
+userRouter.get('/:id',async(req,res,next)=>{
+        try{
+           const userId=req.params.id;
+         const user=await User.findById(userId);
+         if(!user){
+            const error=new Error(`a user with Id of ${userId} is nowhere to be found😭`)
+            error.status=404;
+            return next(error);
+         }
+         res.json(user); 
+        }
+        catch(error){
+            if(error.name==="CastError"){
+                error.status=400;
+            }
+                next(error)
+        }
+})
+//create a new user
 userRouter.post("/",async (req,res,next)=>{
     try{
         const user=new User({
@@ -42,6 +63,7 @@ userRouter.post("/",async (req,res,next)=>{
         next(error)
     }
 })
+//update a user by id
 userRouter.put("/:id",async(req,res,next)=>{
     const userId=req.params.id;
     const {userName,password,email}=req.body;
@@ -60,6 +82,7 @@ userRouter.put("/:id",async(req,res,next)=>{
     }
     res.json(updatedUser)
 })
+//delete a user by id
 userRouter.delete('/:id',async(req,res,next)=>{
     const userId=req.params.id;
     const deletedUser=await User.findByIdAndDelete(userId);
