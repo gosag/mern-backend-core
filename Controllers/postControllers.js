@@ -1,4 +1,4 @@
-import {Post} from '../models/Post.js';
+import Post from '../models/Post.js';
 export const getPosts=async (req,res,next)=>{
     const limit=parseInt(req.query.limit)
         if(limit && !isNaN(limit)){
