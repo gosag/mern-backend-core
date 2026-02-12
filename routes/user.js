@@ -11,8 +11,9 @@ userRouter.get('/',async(req,res,next)=>{
         }
         else{
             users=await User.find()
-            res.json(users)
-        }    
+            res.json(users) 
+        }
+           
     }
     catch(error){
         next(error)
@@ -40,6 +41,34 @@ userRouter.post("/",async (req,res,next)=>{
         console.log(error);
         next(error)
     }
+})
+userRouter.put("/:id",async(req,res,next)=>{
+    const userId=req.params.id;
+    const {userName,password,email}=req.body;
+    const updateFields={};
+    if(userName) updateFields.userName=userName;
+    if(password) updateFields.password=password;
+    if(email) updateFields.email=email;
+    const updatedUser=await User.findByIdAndUpdate(userId,
+        updateFields,
+        {new:true,runValidators:true}
+    )
+    if(!updatedUser){
+        const error=new Error("User not Found");
+        error.status=404;
+        return next(error);
+    }
+    res.json(updatedUser)
+})
+userRouter.delete('/:id',async(req,res,next)=>{
+    const userId=req.params.id;
+    const deletedUser=await User.findByIdAndDelete(userId);
+    if(!deletedUser){
+        const error=new Error(`User with Id of ${userId} is not Found`)
+        error.status=404;
+        return next(error)
+    }
+    res.json(deletedUser);
 })
 export default userRouter;
 
