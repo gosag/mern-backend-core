@@ -6,6 +6,11 @@ export const getPosts=async (req,res,next)=>{
             return res.json(DBposts);
         }
     const DBposts= await Post.find();
+    if(!DBposts){
+        const error=new Error("Posts are not found");
+        error.status=404;
+        next(error);
+    }
     res.json(DBposts);
 }
 export const getPostsById=async (req,res,next)=>{
@@ -44,9 +49,6 @@ export const createPost=async (req,res,next)=>{
         res.status(201).json(newPost);
     }
     catch(error){
-        if(error.name==="ValidationError"){
-            error.status=400;
-        }
         next(error);
     }
 }

@@ -30,9 +30,6 @@ export const getUserById=async(req,res,next)=>{
          res.json(user); 
         }
         catch(error){
-            if(error.name==="CastError"){
-                error.status=400;
-            }
                 next(error)
         }
 }
@@ -47,14 +44,9 @@ export const createUser=async (req,res,next)=>{
     res.status(201).json(user)
     }
     catch(error){
-        if(error.name==="ValidationError"){
-            error.status=400;
-        }
         if(error.name === "MongoServerError"){
             error.status=409;
         }
-        console.log("ERROR NAME:", error.name);
-        console.log(error);
         next(error)
     }
 }
