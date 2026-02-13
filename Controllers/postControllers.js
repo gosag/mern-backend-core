@@ -18,6 +18,11 @@ export const getPostsById=async (req,res,next)=>{
    }
    res.status(200).json(post)
 }
+export const getPostsByUserId=async(req,res,next)=>{
+    const userId=req.params.id;
+    const postsByUser=await Post.find({user:userId}).populate("user");
+    res.json(postsByUser)
+}
 export const createPost=async (req,res,next)=>{
     try{
         const newPost=new Post({
