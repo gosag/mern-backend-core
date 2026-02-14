@@ -1,5 +1,5 @@
 import User from '../models/UserModel.js';
-import {getAllUsers,getUserById,createUser,updateUser,deleteUser} from "../controllers/userController.js"
+import {getAllUsers,getUserById,createUser,updateUser,deleteUser} from "../Controllers/userControllers.js"
 import express from "express";
 const userRouter=express.Router();
 //get all users

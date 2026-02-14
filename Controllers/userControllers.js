@@ -2,10 +2,10 @@ import User from "../models/UserModel.js";
 export const getAllUsers=async(req,res,next)=>{
   try{
     const limit=Math.min(parseInt(req.query.limit)||10,100);
-    const page=Math.max(parseInt(req.query.page||1,1))
+    const page=Math.max(parseInt(req.query.page)||1,1)
     const skip=(page-1)*limit
     const totalItems=await User.countDocuments()
-    const totalPage=Math.ceil(totalItems/items);
+    const totalPage=Math.ceil(totalItems/limit);
     const users=await User.find().skip(skip).limit(limit);
     res.json({
         currentPage:page,
@@ -15,12 +15,13 @@ export const getAllUsers=async(req,res,next)=>{
     })
   }
   catch(error){
+    console.log(error)
     next(error)
   }
 }
 export const getUserById=async(req,res,next)=>{
         try{
-           const userId=req.params.id;
+        const userId=req.params.id;
          const user=await User.findById(userId);
          if(!user){
             const error=new Error(`a user with Id of ${userId} is nowhere to be found😭`)

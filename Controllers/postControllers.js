@@ -1,21 +1,41 @@
 import Post from '../models/Post.js';
+import mongoose from "mongoose"
 export const getPosts=async (req,res,next)=>{
     try{
     const limit= Math.min(parseInt(req.query.limit)||10,100)
     const page=Math.max(parseInt(req.query.page)|| 1,1)
-    let skip=(page-1)*limit
+    const  skip=(page-1)*limit
     const totalItems=await Post.countDocuments()
     const totalPage=Math.ceil(totalItems/limit)
-        const DBposts=await Post.find().skip(skip).limit(limit);
+    const DBposts=await Post.find().skip(skip).limit(limit);
         return res.json({
             currentPage:page,
-            totalItems,
             totalPage,
+            totalItems,
             posts:DBposts
         });
     }
     catch(error){
         next(error)
+    }
+    
+}
+export const getByAuthor=async(req,res,next)=>{
+    try{
+        const query={}
+        if(req.query.user){
+            if(!mongoose.Types.ObjectId.isValid(req.query.user)){
+                const error= new Error("Invalid author Id")
+                error.status=400;
+                return next(error)
+            }
+            query.user=req.query.user
+        }
+        const postsByAuthor=await Post.find(query)
+        res.json(postsByAuthor)
+    }
+    catch(err){
+        next(err);
     }
     
 }
