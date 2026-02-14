@@ -1,22 +1,22 @@
 import User from "../models/UserModel.js";
 export const getAllUsers=async(req,res,next)=>{
-    try{
-        const limit=req.query.limit;
-        let users;
-        if(limit &&!isNaN(limit)){
-            users=await User.find().limit(limit)
-            res.status(200).json(users)
-        }
-        else{
-            users=await User.find()
-            res.json(users) 
-        }
-           
-    }
-    catch(error){
-        next(error)
-    }
-    
+  try{
+    const limit=Math.min(parseInt(req.query.limit)||10,100);
+    const page=Math.max(parseInt(req.query.page||1,1))
+    const skip=(page-1)*limit
+    const totalItems=await User.countDocuments()
+    const totalPage=Math.ceil(totalItems/items);
+    const users=await User.find().skip(skip).limit(limit);
+    res.json({
+        currentPage:page,
+        totalItems,
+        totalPage,
+        users
+    })
+  }
+  catch(error){
+    next(error)
+  }
 }
 export const getUserById=async(req,res,next)=>{
         try{
