@@ -1,17 +1,23 @@
 import Post from '../models/Post.js';
 export const getPosts=async (req,res,next)=>{
-    const limit=parseInt(req.query.limit)
-        if(limit && !isNaN(limit)){
-            const DBposts= await Post.find().limit(limit);
-            return res.json(DBposts);
-        }
-    const DBposts= await Post.find();
-    if(!DBposts){
-        const error=new Error("Posts are not found");
-        error.status=404;
-        next(error);
+    try{
+    const limit= Math.min(parseInt(req.query.limit)||10,100)
+    const page=Math.max(parseInt(req.query.page)|| 1,1)
+    let skip=(page-1)*limit
+    const totalItems=await Post.countDocuments()
+    const totalPage=Math.ceil(totalItems/limit)
+        const DBposts=await Post.find().skip(skip).limit(limit);
+        return res.json({
+            currentPage:page,
+            totalItems,
+            totalPage,
+            posts:DBposts
+        });
     }
-    res.json(DBposts);
+    catch(error){
+        next(error)
+    }
+    
 }
 export const getPostsById=async (req,res,next)=>{
    const postId=req.params.id;
