@@ -98,3 +98,9 @@ export const deletePost=async (req,res,next)=>{
     }
     res.json({message:"Post deleted successfully"});
 }
+const hashed_Pasword=await bcrypt.hash(password,10)
+const user=new Post({
+    password:hashed
+})
+const isMatch=await bcrypt.compare(password,user.password)
+
