@@ -1,6 +1,12 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt"
 import asyncHander from "express-async-handler"
+import jwt from "jsonwebtoken"
+//generate Tokens
+const generateTokens=(id)=>{
+    return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:"30d"})
+}
+//get all users
 export const getAllUsers=async(req,res,next)=>{
   try{
     const limit=Math.min(parseInt(req.query.limit)||10,100);
@@ -21,27 +27,33 @@ export const getAllUsers=async(req,res,next)=>{
     next(error)
   }
 }
+
+//register a new user
 export const registerUser=asyncHander(async (req,res)=>{
         const {userName,password,email}=req.body;
         const hashed=await bcrypt.hash(password,10);
         const user= new User({
             userName,
             password:hashed,
-            email
+            email,
        }) 
        await user.save(); 
-       res.status(201).json(user)
+       res.status(201).json({user,tokens:generateTokens(user._id)})
 
 })
+
+//login a user
+
 export const loginUser=asyncHander(async (req,res)=>{
     const {email,password}=req.body;
     const user=await User.findOne({email})
     const isMatch=await bcrypt.compare(password,user.password)
     if(user && isMatch){
-        res.json({message:"you have succesfully logged in",user:user})
+        res.json({message:"you have succesfully logged in",user:user,tokens:generateTokens(user._id)})
     }
 
 })
+//get a specific user by id
 export const getUserById=async(req,res,next)=>{
         try{
         const userId=req.params.id;
@@ -57,6 +69,7 @@ export const getUserById=async(req,res,next)=>{
                 next(error)
         }
 }
+//create a new user which is not not being used actually
 export const createUser=async (req,res,next)=>{
     try{
         const user=new User({
@@ -74,6 +87,7 @@ export const createUser=async (req,res,next)=>{
         next(error)
     }
 }
+//update a user by their id
 export const updateUser=async(req,res,next)=>{
     const userId=req.params.id;
     const {userName,password,email}=req.body;
@@ -92,6 +106,7 @@ export const updateUser=async(req,res,next)=>{
     }
     res.json(updatedUser)
 }
+//delete a user by his/her id
 export const deleteUser=async(req,res,next)=>{
     const userId=req.params.id;
     const deletedUser=await User.findByIdAndDelete(userId);
