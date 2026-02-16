@@ -23,6 +23,7 @@
     "bcrypt": "^6.0.0",
     "colors": "^1.4.0",
     "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
     "mongoose": "^9.2.0"
   },
   "devDependencies": {
