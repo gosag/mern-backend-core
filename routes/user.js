@@ -1,9 +1,11 @@
 import User from '../models/UserModel.js';
-import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser} from "../Controllers/userControllers.js"
+import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser,loginUser} from "../Controllers/userControllers.js"
 import express from "express";
 const userRouter=express.Router();
 //register user
 userRouter.post('/register',registerUser)
+//login User
+userRouter.post('/login',loginUser)
 //get all users
 userRouter.get('/',getAllUsers)
 //find a user by ID

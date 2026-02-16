@@ -21,20 +21,26 @@ export const getAllUsers=async(req,res,next)=>{
     next(error)
   }
 }
-export const registerUser=asyncHander(async (req,res,next)=>{
-    try{
-        const {username,password,email}=req.body;
-        const hashed=await bcrypt.hash(password,10)
+export const registerUser=asyncHander(async (req,res)=>{
+        const {userName,password,email}=req.body;
+        const hashed=await bcrypt.hash(password,10);
         const user= new User({
-            username,
-            password,
+            userName,
+            password:hashed,
             email
        }) 
-       user.save(); 
-       res.status(201).json({user})
-    }catch(error){
-        next(error)
+       await user.save(); 
+       res.status(201).json(user)
+
+})
+export const loginUser=asyncHander(async (req,res)=>{
+    const {email,password}=req.body;
+    const user=await User.findOne({email})
+    const isMatch=await bcrypt.compare(password,user.password)
+    if(user && isMatch){
+        res.json({message:"you have succesfully logged in",user:user})
     }
+
 })
 export const getUserById=async(req,res,next)=>{
         try{
