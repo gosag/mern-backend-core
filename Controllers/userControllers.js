@@ -1,4 +1,6 @@
 import User from "../models/UserModel.js";
+import bcrypt from "bcrypt"
+import asyncHander from "express-async-handler"
 export const getAllUsers=async(req,res,next)=>{
   try{
     const limit=Math.min(parseInt(req.query.limit)||10,100);
@@ -19,9 +21,21 @@ export const getAllUsers=async(req,res,next)=>{
     next(error)
   }
 }
-export const registerUser=(req,res,next)=>{
-    res.json({message:"user Registered"})
-}
+export const registerUser=asyncHander(async (req,res,next)=>{
+    try{
+        const {username,password,email}=req.body;
+        const hashed=await bcrypt.hash(password,10)
+        const user= new User({
+            username,
+            password,
+            email
+       }) 
+       user.save(); 
+       res.status(201).json({user})
+    }catch(error){
+        next(error)
+    }
+})
 export const getUserById=async(req,res,next)=>{
         try{
         const userId=req.params.id;
