@@ -19,6 +19,9 @@ export const getAllUsers=async(req,res,next)=>{
     next(error)
   }
 }
+export const registerUser=(req,res,next)=>{
+    res.json({message:"user Registered"})
+}
 export const getUserById=async(req,res,next)=>{
         try{
         const userId=req.params.id;
