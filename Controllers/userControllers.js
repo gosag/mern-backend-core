@@ -1,6 +1,6 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt"
-import asyncHander from "express-async-handler"
+import asyncHandler from "express-async-handler"
 import jwt from "jsonwebtoken"
 //generate Tokens
 console.log("before token")
@@ -31,14 +31,14 @@ export const getAllUsers=async(req,res,next)=>{
 }
 
 //register a new user
-export const registerUser=asyncHander(async (req,res)=>{
+export const registerUser=asyncHandler(async (req,res)=>{
         const {userName,password,email}=req.body;
-        const hash=await bcrypt.hash(password,10)
         const userExists=await User.findOne({email})
         if(userExists){
             res.status(409);
             throw new Error("User with this email already exists")
         }
+        const hash=await bcrypt.hash(password,10);
         const user=new User({
             userName,
             password:hash,
@@ -49,7 +49,7 @@ export const registerUser=asyncHander(async (req,res)=>{
         })
 //login a user
 
-export const loginUser=asyncHander(async (req,res)=>{
+export const loginUser=asyncHandler(async (req,res)=>{
     const {email,password}=req.body;
     const user=await User.findOne({email})
     if(!user){

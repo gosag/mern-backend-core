@@ -7,7 +7,6 @@ import logger from './middlewares/logger.js';
 import errorHandler from './middlewares/errors.js';
 import connectDB from './config/db.js';
 import mongoose from 'mongoose';
-
 const app=express();
 const PORT=process.env.PORT ||8000;
 // to parse the incoming request body as JSON
@@ -21,7 +20,7 @@ const __dirname=path.dirname(__filename);
 router.use(express.static(path.join(__dirname,'public'))); */
 //importing the routes
 app.use("/api/posts",router);
-app.use("/api/users",userRouter)
+app.use("/api/users",userRouter);
 //using the error handling middleware
 app.use(errorHandler);
 //connect to the database
