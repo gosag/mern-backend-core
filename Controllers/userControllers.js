@@ -3,9 +3,11 @@ import bcrypt from "bcrypt"
 import asyncHander from "express-async-handler"
 import jwt from "jsonwebtoken"
 //generate Tokens
+console.log("before token")
 const generateTokens=(id)=>{
-    return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:"30d"})
+    return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:'30d'})
 }
+console.log("after token")
 //get all users
 export const getAllUsers=async(req,res,next)=>{
   try{
@@ -31,27 +33,37 @@ export const getAllUsers=async(req,res,next)=>{
 //register a new user
 export const registerUser=asyncHander(async (req,res)=>{
         const {userName,password,email}=req.body;
-        const hashed=await bcrypt.hash(password,10);
-        const user= new User({
+        const hash=await bcrypt.hash(password,10)
+        const userExists=await User.findOne({email})
+        if(userExists){
+            res.status(409);
+            throw new Error("User with this email already exists")
+        }
+        const user=new User({
             userName,
-            password:hashed,
-            email,
-       }) 
-       await user.save(); 
-       res.status(201).json({user,tokens:generateTokens(user._id)})
-
-})
-
+            password:hash,
+            email
+        })
+        await user.save()
+        res.status(201).json({id:user._id,userName,email,tokens:generateTokens(user._id)})
+        })
 //login a user
 
 export const loginUser=asyncHander(async (req,res)=>{
     const {email,password}=req.body;
     const user=await User.findOne({email})
-    const isMatch=await bcrypt.compare(password,user.password)
-    if(user && isMatch){
-        res.json({message:"you have succesfully logged in",user:user,tokens:generateTokens(user._id)})
+    if(!user){
+        res.status(400);
+        throw new Error('user with this email does not exist')
     }
-
+    const isMatch=await bcrypt.compare(password,user.password)
+    if(!isMatch){
+        res.status(400);
+        throw new Error("inValid password")
+    }
+    if(user && isMatch){
+        res.json({message:"succesfull login",token:generateTokens(user._id)})
+    }
 })
 //get a specific user by id
 export const getUserById=async(req,res,next)=>{
