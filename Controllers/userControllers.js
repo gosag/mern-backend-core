@@ -100,10 +100,13 @@ export const createUser=async (req,res,next)=>{
     }
 }
 //update a user by their id
-export const updateUser=async(req,res,next)=>{
+export const updateUser=asyncHandler(async(req,res,next)=>{
     const userId=req.params.id;
     const {userName,password,email}=req.body;
     const updateFields={};
+    if (userId!==req.user.id){
+        throw new Error("Not authorized to update the user info")
+    }
     if(userName) updateFields.userName=userName;
     if(password) updateFields.password=password;
     if(email) updateFields.email=email;
@@ -117,10 +120,14 @@ export const updateUser=async(req,res,next)=>{
         return next(error);
     }
     res.json(updatedUser)
-}
+})
 //delete a user by his/her id
-export const deleteUser=async(req,res,next)=>{
+export const deleteUser=asyncHandler(async(req,res,next)=>{
     const userId=req.params.id;
+    if(userId!==req.user.id){
+        res.status(403);
+        throw new Error("not authorized to delete this user")
+    }
     const deletedUser=await User.findByIdAndDelete(userId);
     if(!deletedUser){
         const error=new Error(`User with Id of ${userId} is not Found`)
@@ -128,4 +135,4 @@ export const deleteUser=async(req,res,next)=>{
         return next(error)
     }
     res.json(deletedUser);
-}
+})
