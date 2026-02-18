@@ -1,12 +1,8 @@
 import mongoose from "mongoose";
 const userSchema= new mongoose.Schema(({
-    name:{
-        type:String
-    },
     userName:{
         type:String,
         required:true,
-        unique:true,
         min:3
     },
    password:{
@@ -16,7 +12,8 @@ const userSchema= new mongoose.Schema(({
     },
     email:{
         type:String,
-        required:true
+        required:true,
+        unique:true,
     }
 }));
 const User=mongoose.model("User",userSchema);
