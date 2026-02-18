@@ -1,6 +1,6 @@
-const  validate=(schema)=>(req,res,next)=>{
+const  validate=(schema,type)=>(req,res,next)=>{
     try{
-        const result=schema.safeParse(req.body)
+        const result=schema.safeParse(req[type])
         if(!result.success){
             return res.status(400).json({
                 errors:result.error.errors.map(err=>({
@@ -9,7 +9,7 @@ const  validate=(schema)=>(req,res,next)=>{
                 }))
             })
         }
-        req.body=result.data;
+        req[type]=result.data;
         next()
         }
     catch(error){
