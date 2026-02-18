@@ -16,7 +16,7 @@ userRouter.get('/:id',protector,getUserById)
 //create a new user
 userRouter.post("/",validate(userSchema),createUser)
 //update a user by id
-userRouter.put("/:id",protector,validate(userSchema),updateUser)
+userRouter.put("/:id",protector,validate(userSchema.partial()),updateUser)
 //delete a user by id
 userRouter.delete('/:id',protector,deleteUser)
 export default userRouter;
