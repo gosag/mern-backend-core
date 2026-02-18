@@ -1,4 +1,3 @@
-import User from '../models/UserModel.js';
 import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser,loginUser} from "../Controllers/userControllers.js"
 import protector from '../middlewares/authMiddleware.js';
 import userSchema from '../models/userSchema.js';
