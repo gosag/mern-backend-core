@@ -1,7 +1,6 @@
 import {z} from "zod";
 import mongoose from "mongoose"
 export const userBodySchema=z.object({
-    body:z.object({
         userName:z
             .string()
             .trim()
@@ -14,7 +13,6 @@ export const userBodySchema=z.object({
             .trim()
             .toLowerCase()
             .email()
-    }),
 })
 export const userQueryschema=z.object({
     source:z.string().optional()
