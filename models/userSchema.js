@@ -1,4 +1,5 @@
 import {z} from "zod";
+import mongoose from "mongoose"
 export const userBodySchema=z.object({
     body:z.object({
         userName:z
@@ -18,3 +19,9 @@ export const userBodySchema=z.object({
 export const userQueryschema=z.object({
     source:z.string().optional()
 })
+export const mongoIdSchema = z.object({
+  id: z.string().refine(
+    val => mongoose.Types.ObjectId.isValid(val),
+    { message:"invalid MongoDB ObjectId"}
+  ),
+});
