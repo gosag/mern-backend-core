@@ -5,6 +5,60 @@ import validate from '../middlewares/validate.js';
 import express from "express";
 const userRouter=express.Router();
 //register user
+/**
+ * @openapi
+ * /users/register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Register a new user and return an authentication token
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userName
+ *               - password
+ *               - email
+ *             properties:
+ *               userName:
+ *                 type: string
+ *                 minLength: 3
+ *                 example: gosa123
+ *               password:
+ *                 type: string
+ *                 minLength: 6
+ *                 example: strongPassword123
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 userName:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 token:
+ *                   type: string
+ *       400:
+ *         description: Validation error
+ *       409:
+ *         description: Email already exists
+ *       500:
+ *         description: Internal server error
+ */
 userRouter.post('/register',validate(userBodySchema,"body"),registerUser)
 //login User
 userRouter.post('/login',validate(userBodySchema,"body"),loginUser)
