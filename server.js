@@ -22,6 +22,13 @@ app.use(logger);
 const __dirname=path.dirname(__filename);
 router.use(express.static(path.join(__dirname,'public'))); */
 //importing the routes
+app.get("/api", (req, res) => {
+  res.json({
+    message: "API is running",
+    routes: ["/api/users", "/api/posts"],
+    docs: "/docs"
+  });
+});
 app.use("/api/posts",router);
 app.use("/api/users",userRouter);
 //using the error handling middleware
