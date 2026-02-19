@@ -14,6 +14,10 @@ export const userBodySchema=z.object({
             .toLowerCase()
             .email()
 })
+export const loginSchema=z.object({
+    email:z.string().trim().email(),
+    password:z.string()
+})
 export const userQueryschema=z.object({
     source:z.string().optional()
 })

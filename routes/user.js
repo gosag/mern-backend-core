@@ -1,6 +1,6 @@
 import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser,loginUser} from "../Controllers/userControllers.js"
 import protector from '../middlewares/authMiddleware.js';
-import {userBodySchema,userQueryschema,mongoIdSchema} from '../models/userSchema.js';
+import {userBodySchema,loginSchema,userQueryschema,mongoIdSchema} from '../models/userSchema.js';
 import validate from '../middlewares/validate.js';
 import express from "express";
 const userRouter=express.Router();
@@ -61,7 +61,7 @@ const userRouter=express.Router();
  */
 userRouter.post('/register',validate(userBodySchema,"body"),registerUser)
 //login User
-userRouter.post('/login',validate(userBodySchema,"body"),loginUser)
+userRouter.post('/login',validate(loginSchema,"body"),loginUser)
 //get all users
 userRouter.get('/',validate(userQueryschema,"query"),getAllUsers)
 //find a user by ID
