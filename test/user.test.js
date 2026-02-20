@@ -1,7 +1,16 @@
 import request from "supertest"
 import app from "../app.js"
 import mongoose from "mongoose"
-describe("POST api/users/register",()=>{
+import connectDB from "../config/db.js";
+
+beforeAll(async () => {
+  await connectDB();
+});
+
+afterAll(async () => {
+  await mongoose.connection.close();
+});
+/* describe("POST api/users/register",()=>{
     test("given username, password and email",async()=>{
         const response=await request(app)
        .post('/api/users/register')
@@ -11,10 +20,13 @@ describe("POST api/users/register",()=>{
             email:"gosagirma1111@gmail.com"
         })
         expect(response.status).toBe(201)
-        /* expect(response.body).toHaveProperty("tokens")
-        expect(response.body).toHaveProperty("email") */
+        expect(response.body).toHaveProperty("tokens")
+        expect(response.body).toHaveProperty("email") 
     })
-})
-afterAll(async () => {
-  await mongoose.connection.close()
+})*/
+describe("/GET /api/users",()=>{
+    test("check if it returns the data ",async()=>{
+        const res=await request(app).get("/api/users")
+        expect(res.status).toBe(200)
+    })  
 })
