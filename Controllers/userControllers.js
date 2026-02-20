@@ -32,7 +32,6 @@ export const getAllUsers=async(req,res,next)=>{
 
 //register a new user
 export const registerUser=asyncHandler(async (req,res)=>{
-    try{
         const {userName,password,email}=req.body;
         const userExists=await User.findOne({email})
         if(userExists){
@@ -47,11 +46,7 @@ export const registerUser=asyncHandler(async (req,res)=>{
         })
         await user.save()
         res.status(201).json({id:user._id,userName,email,tokens:generateTokens(user._id)})
-    }
-    catch(error){
-        console.log(error)
-        next(error)
-    }
+
         })
 //login a user
 

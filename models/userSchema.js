@@ -18,9 +18,9 @@ export const loginSchema=z.object({
     email:z.string().trim().email(),
     password:z.string()
 })
-export const userQueryschema=z.object({
-    source:z.string().optional()
-})
+export const userQuerySchema = z.object({
+  source: z.string().optional(),
+});
 export const mongoIdSchema = z.object({
   id: z.string().refine(
     val => mongoose.Types.ObjectId.isValid(val),
