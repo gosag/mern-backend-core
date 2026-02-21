@@ -35,8 +35,9 @@ export const registerUser=asyncHandler(async (req,res)=>{
         const {userName,password,email}=req.body;
         const userExists=await User.findOne({email})
         if(userExists){
-            res.status(409);
-            throw new Error("User with this email already exists")
+            const err=new Error("A user with this email already exists akuna matata")
+            err.statusCode=409;
+            throw err
         }
         const hash=await bcrypt.hash(password,10);
         const user=new User({
@@ -54,21 +55,22 @@ export const loginUser=asyncHandler(async (req,res)=>{
     const {email,password}=req.body;
     const user=await User.findOne({email})
     if(!user){
-        res.status(400);
-        throw new Error('user with this email does not exist')
+        const err=new Error("user with this email does not exist")
+        err.statusCode=400;
+        throw err
     }
     const isMatch=await bcrypt.compare(password,user.password)
     if(!isMatch){
-        res.status(400);
-        throw new Error("inValid password")
+        const err=new Error("invalid password");
+        err.statusCode=400;
+        throw err
     }
     if(user && isMatch){
-        res.json({message:"succesfull login",token:generateTokens(user._id)})
+        res.json({message:"succesfull login",tokens:generateTokens(user._id)})
     }
 })
 //get a specific user by id
-export const getUserById=async(req,res,next)=>{
-        try{
+export const getUserById=asyncHandler(async(req,res,next)=>{
         const userId=req.params.id;
          const user=await User.findById(userId);
          if(!user){
@@ -77,11 +79,7 @@ export const getUserById=async(req,res,next)=>{
             return next(error);
          }
          res.json(user); 
-        }
-        catch(error){
-                next(error)
-        }
-}
+})
 //create a new user which is not not being used actually
 export const createUser=async (req,res,next)=>{
     try{
@@ -106,7 +104,9 @@ export const updateUser=asyncHandler(async(req,res,next)=>{
     const {userName,password,email}=req.body;
     const updateFields={};
     if (userId!==req.user.id){
-        throw new Error("Not authorized to update the user info")
+        const err= new Error("Not authorized to update the user info");
+        err.statusCode=403;
+        throw err;
     }
     if(userName) updateFields.userName=userName;
     if(password) updateFields.password=password;
@@ -117,8 +117,8 @@ export const updateUser=asyncHandler(async(req,res,next)=>{
     )
     if(!updatedUser){
         const error=new Error("User not Found");
-        error.status=404;
-        return next(error);
+        error.statusCode=404;
+        throw error;
     }
     res.json(updatedUser)
 })
@@ -126,14 +126,15 @@ export const updateUser=asyncHandler(async(req,res,next)=>{
 export const deleteUser=asyncHandler(async(req,res,next)=>{
     const userId=req.params.id;
     if(userId!==req.user.id){
-        res.status(403);
-        throw new Error("not authorized to delete this user")
+        const error=new Error("not authorized to delete this user")
+        error.statusCode=403;
+        throw error
     }
     const deletedUser=await User.findByIdAndDelete(userId);
     if(!deletedUser){
         const error=new Error(`User with Id of ${userId} is not Found`)
-        error.status=404;
-        return next(error)
+        error.statusCode=404;
+        throw error;
     }
     res.json(deletedUser);
 })

@@ -12,11 +12,23 @@ beforeAll(async () => {
 describe('/GET /api/users', () => {
   test('check if it returns the data', async () => {
     const response = await request(app).get('/api/users');
-    expect(response.status).toBe(200);
-    expect(response.body).toHavePrope
+    expect(response.status).toBe(200)
   });
 });
+describe("POST /api/users/register",()=>{
+  test('registers a new user', async () => {
+  const res = await request(app)
+    .post('/api/users/register')
+    .send({
+      userName: 'testuser',
+      email: 'test@example.com',
+      password: 'password123',
+    });
 
+  expect(res.status).toBe(201);
+  expect(res.body).toHaveProperty('token');
+});
+})
 // 3. CLEAN EXIT: The "Zombie Killer"
 // This prevents the "Jest did not exit" warning by killing the connection
 afterAll(async () => {
