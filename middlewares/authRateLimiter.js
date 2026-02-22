@@ -8,4 +8,14 @@ const authRateLimiter=rateLimit({
         message:"Too many attempts. Please try again later."
     }
 })
+export const limiter=rateLimit({
+    windowMs:1*60*1000,
+    max:100,
+    standardHeaders:true,
+    legacyHeaders:false,
+    message:{
+        status:429,
+        message:"Too many attempts. Please try again later.",
+    }
+})
 export default authRateLimiter;

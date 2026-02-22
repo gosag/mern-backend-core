@@ -3,16 +3,16 @@ import protector from '../middlewares/authMiddleware.js';
 import {userBodySchema,loginSchema,userQuerySchema,mongoIdSchema} from '../models/userSchema.js';
 import validate from '../middlewares/validate.js';
 import express from "express";
-import authRateLimiter from "../middlewares/authRateLimiter.js";
+import authRateLimiter ,{limiter} from "../middlewares/authRateLimiter.js";
 const userRouter=express.Router();
 //get user
 userRouter.post('/register',authRateLimiter,validate(userBodySchema,"body"),registerUser)
 //login User
 userRouter.post('/login',authRateLimiter, validate(loginSchema,"body"),loginUser)
 //get all users
-userRouter.get('/',getAllUsers)
+userRouter.get('/',limiter,getAllUsers)
 //find a user by ID
-userRouter.get('/:id',protector,validate(mongoIdSchema,"params"),getUserById)
+userRouter.get('/:id',limiter,protector,validate(mongoIdSchema,"params"),getUserById)
 //create a new user
 userRouter.post("/",validate(userBodySchema,"body"),createUser)
 //update a user by id
