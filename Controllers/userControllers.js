@@ -31,11 +31,11 @@ export const getAllUsers=async(req,res,next)=>{
 }
 
 //register a new user
-export const registerUser=asyncHandler(async (req,res)=>{
+export const registerUser=asyncHandler(async (req,res,next)=>{
         const {userName,password,email}=req.body;
         const userExists=await User.findOne({email})
         if(userExists){
-            const err=new Error("A user with this email already exists akuna matata")
+            const err=new Error("A user with this email already exists, Hakuna matata")
             err.statusCode=409;
             throw err
         }

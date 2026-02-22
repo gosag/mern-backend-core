@@ -1,6 +1,7 @@
-const errorHandler=(err,req,res)=>{
-    if(err.status){
-        return res.status(err.status).json({message:err.message})
+const errorHandler=(err,req,res,next)=>{
+    const status = err.statusCode || err.status || 500;
+    if (status !== 500) {
+        return res.status(status).json({ message: err.message });
     }
     if(err.name==="CastError"){
         return res.status(400).json({message:"Invalid ID format"})
