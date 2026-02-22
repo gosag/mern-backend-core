@@ -3,10 +3,12 @@ import protector from '../middlewares/authMiddleware.js';
 import {userBodySchema,loginSchema,userQuerySchema,mongoIdSchema} from '../models/userSchema.js';
 import validate from '../middlewares/validate.js';
 import express from "express";
+import authRateLimiter from "../middlewares/authRateLimiter.js";
 const userRouter=express.Router();
-userRouter.post('/register',validate(userBodySchema,"body"),registerUser)
+//get user
+userRouter.post('/register',authRateLimiter,validate(userBodySchema,"body"),registerUser)
 //login User
-userRouter.post('/login',validate(loginSchema,"body"),loginUser)
+userRouter.post('/login',authRateLimiter, validate(loginSchema,"body"),loginUser)
 //get all users
 userRouter.get('/',getAllUsers)
 //find a user by ID
