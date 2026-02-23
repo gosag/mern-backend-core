@@ -10,6 +10,8 @@ const app=express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 //to allow only some domains access the api
+//using the logger middleware
+app.use(logger);
 const corsOptions={
     origin:"http://localhost:3000",
     methods:["GET","POST","PUT","DELETE"],
@@ -17,8 +19,9 @@ const corsOptions={
     cridentials:true
 }
 app.use(cors(corsOptions))
-//using the logger middleware
-app.use(logger);
+//to compress and send  to large files 
+app.use(compression())
+
 app.use("/api/posts",router);
 app.use("/api/users",userRouter);
 //using the error handling middleware
