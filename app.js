@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from "morgan"
 import cors from "cors"
 import compression from "compression"
 import router from './routes/posts.js';
@@ -12,6 +13,8 @@ app.use(express.urlencoded({extended:true}))
 //to allow only some domains access the api
 //using the logger middleware
 app.use(logger);
+app.use(morgan("dev"))
+//to allow only some domains for security issue
 const corsOptions={
     origin:"http://localhost:3000",
     methods:["GET","POST","PUT","DELETE"],
@@ -19,9 +22,9 @@ const corsOptions={
     cridentials:true
 }
 app.use(cors(corsOptions))
-//to compress and send  to large files 
+//to compress and send  too large files 
 app.use(compression())
-
+//routes
 app.use("/api/posts",router);
 app.use("/api/users",userRouter);
 //using the error handling middleware
