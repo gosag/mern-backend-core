@@ -1,151 +1,102 @@
-Express-Rest
+MERN Backend Core 🚀
 
-A simple RESTful API built with Node.js, Express.js, and MongoDB (Mongoose) — designed to be scalable, organized, and easy to extend.
+A scalable RESTful API backend built with Node.js, Express.js, and MongoDB (Mongoose) — designed for clarity, maintainability, and real-world use cases.
 
-This project demonstrates core backend fundamentals and clean architecture for building APIs.
+This repo offers a clean foundation for building production-ready APIs with features like CRUD operations, centralized error handling, pagination, filtering, and more.
 
-🧠 What It’s For
+🧠 Features
 
-This backend provides:
+✔️ REST-style CRUD operations
+✔️ Pagination, filtering & sorting support
+✔️ Environment configuration via .env
+✔️ Centralized error handling
+✔️ Modular and scalable folder structure
+✔️ Clean architecture ready to extend
 
-CRUD operations
-
-Pagination
-
-Filtering & sorting
-
-Environment configuration handling
-
-Centralized error handling
-
-A scalable folder structure you can build on
-
-🛠 Tech Stack
-
-Node.js
-
-Express.js
-
-MongoDB
-
-Mongoose
-
-🚀 Setup & Run
-
-Clone the repo
-
-git clone https://github.com/gosag/Express-Rest.git
-cd Express-Rest
-
-
-Install dependencies
-
+📦 Tech Stack
+Layer	Technology
+Server	Node.js
+Framework	Express.js
+Database	MongoDB
+ORM	Mongoose
+Middleware	Custom error & utils
+🚀 Getting Started
+1. Clone the repository
+git clone https://github.com/gosag/mern-backend-core.git
+cd mern-backend-core
+2. Install Dependencies
 npm install
+3. Configure Environment Variables
 
-
-Create a .env file in project root with:
+Create a .env file in the root with the following:
 
 PORT=8000
-MONGO_URI=your_mongodb_connection_string
+MONGO_URI=<your MongoDB connection string>
 NODE_ENV=development
 
+Replace <your MongoDB connection string> with your actual URI.
 
-Start dev server
-
+4. Run the development server
 npm run dev
 
+Your API should now be running on 🎯 http://localhost:8000
 
-Visit:
-
-http://localhost:8000
-
-
-📁 Folder Structure
-Express-Rest/
-├── controllers/        # business logic
-├── routes/             # API route definitions
-├── models/             # Mongoose schemas
-├── middlewares/        # custom middlewares (errors, auth, etc.)
-├── config/             # database connection setup
-├── public/             # static assets
-├── server.js           # entry point
-├── .env                # config (not committed)
+🗂 Folder Structure
+mern-backend-core/
+├── controllers/      # Business logic
+├── routes/           # API endpoints
+├── models/           # Mongoose schemas
+├── middlewares/      # Error handling & custom middleware
+├── config/           # Database connection setup
+├── public/           # Static assets
+├── server.js         # Entry point
+├── .env              # Local config (not committed)
 ├── package.json
 └── README.md
-
-
-📡 API Endpoints
-Method	Endpoint	Action
+📌 API Endpoints (Example)
+Method	Endpoint	Description
 GET	/posts	Get all posts
-GET	/posts/:id	Get one post
+GET	/posts/:id	Get a post by ID
 POST	/posts	Create a new post
 PUT	/posts/:id	Update a post
-DELETE	/posts/:id	Remove a post
-📊 Pagination, Filtering & Sorting
-Pagination
+DELETE	/posts/:id	Delete a post
 
-Use query params:
+Query examples for pagination, filtering, and sorting:
 
-GET /posts?page=2&limit=10
+Pagination: /posts?page=2&limit=10
 
+Filtering: /posts?author=123
 
-Response includes:
+Sorting: /posts?sortBy=createdAt&order=desc
 
-{
-  currentPage,
-  totalItems,
-  totalPages,
-  posts: [...]
-}
+🛠 Error Handling
 
+The project uses centralized error middleware to return:
 
-Filtering
+✔️ Proper HTTP status codes
+✔️ JSON error responses
+✔️ Graceful handling of invalid IDs and database errors
 
-Filter fields in query:
+🌟 Extend This Project
 
-GET /posts?author=123&category=tech
+This core backend is a solid starting point for many applications. Ideas for next steps:
 
-
-Sorting
-
-Sort results:
-
-GET /posts?sortBy=createdAt&order=desc
-
-
-Allowed sort fields only.
-
-⚠️ Environment Variables
-Key	Purpose
-PORT	Server port
-MONGO_URI	MongoDB connection string
-
-🛡 Error Handling
-
-Centralized error middleware
-
-Proper HTTP status codes
-
-JSON error responses
-
-Handles bad IDs & DB errors gracefully
-
-🔮 Future Ideas
-
-This project is a strong base. You can add:
-
-JWT Authentication
+Add JWT authentication
 
 Role-based access control
 
-Input validation (Joi/Zod)
+Input validation (Joi / Zod)
 
-Swagger docs
+API documentation (Swagger / OpenAPI)
 
-Rate limiting
+Rate limiting / security hardening
 
-Tests (unit + integration)
+Unit & integration tests
 
-📄 License
+📜 License
 
-Open-source — free to use and modify
+This project is open-source and free to use or modify.
+
+❤️ Contributing
+
+Found a bug or want to improve something? Contributions and suggestions are welcome!
