@@ -46,7 +46,9 @@ npm install
 Create a .env file in project root with:
 
 PORT=8000
+
 MONGO_URI=your_mongodb_connection_string
+
 NODE_ENV=development
 
 
@@ -63,25 +65,41 @@ http://localhost:8000
 📁 Folder Structure
 Express-Rest/
 ├── controllers/        # business logic
+
 ├── routes/             # API route definitions
+
 ├── models/             # Mongoose schemas
+
 ├── middlewares/        # custom middlewares (errors, auth, etc.)
+
 ├── config/             # database connection setup
+
 ├── public/             # static assets
+
 ├── server.js           # entry point
+
 ├── .env                # config (not committed)
+
 ├── package.json
+
 └── README.md
 
 
 📡 API Endpoints
 Method	Endpoint	Action
+
 GET	/posts	Get all posts
+
 GET	/posts/:id	Get one post
+
 POST	/posts	Create a new post
+
 PUT	/posts/:id	Update a post
+
 DELETE	/posts/:id	Remove a post
+
 📊 Pagination, Filtering & Sorting
+
 Pagination
 
 Use query params:
