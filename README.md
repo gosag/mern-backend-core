@@ -148,21 +148,6 @@ JSON error responses
 
 Handles bad IDs & DB errors gracefully
 
-🔮 Future Ideas
-
-This project is a strong base. You can add:
-
-JWT Authentication
-
-Role-based access control
-
-Input validation (Joi/Zod)
-
-Swagger docs
-
-Rate limiting
-
-Tests (unit + integration)
 
 📄 License
 
