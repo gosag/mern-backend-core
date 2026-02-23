@@ -1,6 +1,6 @@
 import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser,loginUser} from "../Controllers/userControllers.js"
 import protector from '../middlewares/authMiddleware.js';
-import {userBodySchema,loginSchema,userQuerySchema,mongoIdSchema} from '../models/userSchema.js';
+import {userBodySchema,loginSchema,mongoIdSchema} from '../models/userSchema.js';
 import validate from '../middlewares/validate.js';
 import express from "express";
 import authRateLimiter ,{limiter} from "../middlewares/authRateLimiter.js";
