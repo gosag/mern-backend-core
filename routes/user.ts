@@ -1,4 +1,5 @@
-import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser,loginUser} from "../Controllers/userControllers.js"
+import {getAllUsers,getUserById,createUser,updateUser,deleteUser,registerUser,loginUser}
+from "../Controllers/userControllers.js"
 import protector from '../middlewares/authMiddleware.js';
 import {userBodySchema,loginSchema,mongoIdSchema} from '../models/userSchema.js';
 import validate from '../middlewares/validate.js';

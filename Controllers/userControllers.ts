@@ -1,5 +1,6 @@
 import type {Request,Response,NextFunction} from "express"
 import User from "../models/UserModel.js";
+import type { ParamsDictionary } from 'express-serve-static-core';
 import bcrypt from "bcrypt"
 import asyncHandler from "express-async-handler"
 import jwt from "jsonwebtoken"
@@ -22,8 +23,8 @@ interface requestBody{
     password?:string,
     email?:string
 }
-interface requestParams{
-    id:string
+interface requestParams extends ParamsDictionary{
+    id:string;
 }
 export const getAllUsers=async(req:Request<{},{},{},getUsersQuers>,res:Response,next:NextFunction)=>{
   try{
@@ -150,7 +151,7 @@ export const updateUser=asyncHandler(async(req:Request<requestParams,{},requestB
     res.json(updatedUser)
 })
 //delete a user by his/her id
-export const deleteUser=asyncHandler(async(req,res,next)=>{
+export const deleteUser=asyncHandler(async(req:Request,res:Response)=>{
     const userId=req.params.id;
     if(userId!==req.user?.id){
         const error=new Error("not authorized to delete this user") as RequestError

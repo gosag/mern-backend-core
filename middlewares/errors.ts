@@ -1,4 +1,10 @@
-const errorHandler=(err,req,res,next)=>{
+import type { Request, Response, NextFunction } from "express";
+interface RequestError extends Error{
+    status?:number,
+    statusCode?:number,
+    code?:number
+}
+const errorHandler=(err:RequestError,req:Request,res:Response,next:NextFunction)=>{
     const status = err.statusCode || err.status || 500;
     if (status !== 500) {
         return res.status(status).json({ message: err.message });
